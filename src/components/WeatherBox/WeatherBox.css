@@ -1,0 +1,33 @@
+.current-weathrer {
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 620px;
+  text-align: center;
+  border-radius: 6px;
+  box-sizing: border-box;
+  padding: 40px;
+}
+
+.current-weathrer h2 {
+  font-size: 20px;
+}
+.current-weathrer ul {
+  display: flex;
+  justify-content: center;
+  gap: 0 20px;
+  margin-top: 20px;
+}
+.current-weathrer ul li {
+  font-size: 48px;
+}
+.current-weathrer ul li i {
+  font-size: 32px;
+}
+.current-weathrer ul li:last-child:before {
+  content: "/";
+  display: inline-flex;
+  margin-right: 20px;
+}
+.current-weathrer h3 {
+  font-size: 20px;
+  margin-top: 40px;
+}
