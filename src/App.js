@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
 import "./App.css";
 import WeatherBox from "./components/WeatherBox/WeatherBox";
 import WeatherButton from "./components/WeatherButton/WeatherButton";
@@ -12,8 +13,17 @@ import WeatherButton from "./components/WeatherButton/WeatherButton";
  * 6. 데이터를 들고오는동안 로딩스피너가 돈다.
  */
 
+const cities = ["Paris", "New York City", "Nha Trang", "Seoul"];
+
 function App() {
+  const [loading, setLoading] = useState(false);
+  const [city, setCity] = useState(null);
   const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+    if (city === null) getCurrentLocation();
+    else getweatherByCity();
+  }, [city]);
 
   const getCurrentLocation = useCallback(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -25,20 +35,47 @@ function App() {
 
   const getWeatherByCurrentLocation = async (lat, lon) => {
     let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=6a4568d07103a774cc1301828382d566&units=metric`;
+    setLoading(true);
     let response = await fetch(url);
     let data = await response.json();
     setWeather(data);
+    setLoading(false);
   };
 
-  useEffect(() => {
-    getCurrentLocation();
-  }, [getCurrentLocation]);
+  const getweatherByCity = async () => {
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=6a4568d07103a774cc1301828382d566&units=metric`;
+    setLoading(true);
+    let response = await fetch(url);
+    let data = await response.json();
+    setWeather(data);
+    setLoading(false);
+  };
+
+  const handleCityChange = (city) => {
+    city === "current" ? setCity(null) : setCity(city);
+  };
 
   return (
     <main>
       <section className="weather-info">
-        <WeatherBox weather={weather} />
-        <WeatherButton />
+        {loading ? (
+          <ClipLoader
+            color="#fff"
+            loading={loading}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        ) : (
+          <>
+            <WeatherBox weather={weather} />
+            <WeatherButton
+              cities={cities}
+              handleCityChange={handleCityChange}
+              selectedCity={city}
+            />
+          </>
+        )}
       </section>
     </main>
   );

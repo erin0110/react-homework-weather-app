@@ -1,14 +1,25 @@
 import React from "react";
 import "./WeatherButton.css";
 
-const WeatherButton = () => {
+const WeatherButton = ({ cities, selectedCity, handleCityChange }) => {
+  console.log("selectedCity", selectedCity);
   return (
     <div className="weathrer-buttons">
-      <button>현재위치</button>
-      <button>버튼</button>
-      <button>버튼</button>
-      <button>버튼</button>
-      <button>버튼</button>
+      <button
+        onClick={() => handleCityChange("current")}
+        className={selectedCity === null ? "active" : ""}
+      >
+        Current Location
+      </button>
+      {cities.map((item, index) => (
+        <button
+          key={index}
+          onClick={() => handleCityChange(item)}
+          className={selectedCity === item ? "active" : ""}
+        >
+          {item}
+        </button>
+      ))}
     </div>
   );
 };

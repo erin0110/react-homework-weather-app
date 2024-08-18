@@ -1,23 +1,38 @@
 .weathrer-buttons {
-  width: 620px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 0 5px;
 }
 .weathrer-buttons button {
-  min-width: 120px;
+  width: calc(20% - 4px);
   height: 42px;
   font-size: 15px;
+  background-color: rgba(255, 255, 255, 0.8);
   color: #0b1828;
   font-weight: bold;
-  background-color: rgba(233, 189, 122, 0.9);
   outline: none;
   border: 0;
   border-radius: 4px;
   cursor: pointer;
 }
 .weathrer-buttons button:hover {
-  background-color: rgba(233, 189, 122, 1);
+  background-color: rgba(255, 255, 255, 0.9);
   transition: background-color 0.3s ease;
+}
+.weathrer-buttons button.active {
+  background-color: rgba(233, 189, 122, 0.9);
+}
+
+@media (max-width: 1023px) {
+  .weathrer-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 5px 0;
+  }
+  .weathrer-buttons button {
+    width: 100%;
+    height: 32px;
+  }
 }

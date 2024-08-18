@@ -6,6 +6,7 @@ main {
   min-height: 100vh;
   background: url(./images/bg.jpg) 50% 100% / cover no-repeat;
   color: #fff;
+  box-sizing: border-box;
 }
 
 .weather-info {
@@ -13,5 +14,14 @@ main {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  width: 620px;
   gap: 20px 0;
+}
+@media (max-width: 1023px) {
+  main {
+    padding: 40px 20px;
+  }
+  .weather-info {
+    width: 100%;
+  }
 }
