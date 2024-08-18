@@ -20,10 +20,14 @@ function App() {
   const [city, setCity] = useState(null);
   const [weather, setWeather] = useState(null);
 
-  useEffect(() => {
-    if (city === null) getCurrentLocation();
-    else getweatherByCity();
-  }, [city]);
+  const getWeatherByCurrentLocation = useCallback(async (lat, lon) => {
+    let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=6a4568d07103a774cc1301828382d566&units=metric`;
+    setLoading(true);
+    let response = await fetch(url);
+    let data = await response.json();
+    setWeather(data);
+    setLoading(false);
+  }, []);
 
   const getCurrentLocation = useCallback(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -31,25 +35,21 @@ function App() {
       let lon = position.coords.longitude;
       getWeatherByCurrentLocation(lat, lon);
     });
-  }, []);
+  }, [getWeatherByCurrentLocation]);
 
-  const getWeatherByCurrentLocation = async (lat, lon) => {
-    let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=6a4568d07103a774cc1301828382d566&units=metric`;
-    setLoading(true);
-    let response = await fetch(url);
-    let data = await response.json();
-    setWeather(data);
-    setLoading(false);
-  };
-
-  const getweatherByCity = async () => {
+  const getweatherByCity = useCallback(async () => {
     let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=6a4568d07103a774cc1301828382d566&units=metric`;
     setLoading(true);
     let response = await fetch(url);
     let data = await response.json();
     setWeather(data);
     setLoading(false);
-  };
+  }, [city]);
+
+  useEffect(() => {
+    if (city === null) getCurrentLocation();
+    else getweatherByCity();
+  }, [city, getCurrentLocation, getweatherByCity]);
 
   const handleCityChange = (city) => {
     city === "current" ? setCity(null) : setCity(city);
